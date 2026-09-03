@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MnVision AI - Discover Manganese. Predict Supply. Secure the Future.</title>
+  <meta name="description"
+    content="An AI-powered geospatial intelligence platform that combines satellite imagery, geological data and machine learning to identify potential manganese reserves and forecast future production shortfalls." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Custom Space-Tech & MnVision CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+  <!-- =========================================================================
+       LANDING PAGE NAVBAR
+       ========================================================================= -->
+  <nav class="landing-nav">
+    <a href="#home" class="logo-wrap">
+      <div class="logo-badge">
+        <i data-lucide="layers" style="width: 22px; height: 22px;"></i>
+      </div>
+      <div class="logo-text">MnVision <span>AI</span></div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#home" class="nav-link active">Home</a></li>
+      <li><a href="#problem-section" class="nav-link">Why Manganese</a></li>
+      <li><a href="prediction.html" class="nav-link">AI Prediction</a></li>
+      <li><a href="forecast.html" class="nav-link">Production Forecast</a></li>
+      <li><a href="risk-analysis.html" class="nav-link">Risk Analysis</a></li>
+      <li><a href="analytics.html" class="nav-link">Analytics</a></li>
+      <li><a href="reports.html" class="nav-link">Reports</a></li>
+      <li><a href="dashboard.html" class="nav-link">GIS Dashboard</a></li>
+      <li><a href="#about-section" class="nav-link">About</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="dashboard.html" class="btn-landing outline">
+        <i data-lucide="map" style="width: 15px; height: 15px;"></i> Explore Map
+      </a>
+      <a href="dashboard.html" class="btn-landing primary">
+        <i data-lucide="compass" style="width: 15px; height: 15px;"></i> Launch Dashboard
+      </a>
+    </div>
+  </nav>
+
+  <!-- =========================================================================
+       HERO SECTION
+       ========================================================================= -->
+  <section class="hero-section" id="home">
+    <div class="hero-grid">
+
+      <!-- Left Hero Text & CTA -->
+      <div class="hero-content">
+        <div class="hero-tag">
+          <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+          Next-Gen AI Mineral Intelligence & Geospatial GIS
+        </div>
+
+        <h1 class="hero-heading">
+          Discover Manganese.<br />
+          <span class="gold-text">Predict Supply.</span><br />
+          Secure the Future.
+        </h1>
+
+        <p class="hero-subtitle">
+          An AI-powered geospatial intelligence platform that combines satellite imagery, geological data and machine
+          learning to identify potential manganese reserves and forecast future production shortfalls.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="dashboard.html" class="btn-landing primary">
+            <i data-lucide="globe-2" style="width: 16px; height: 16px;"></i> Explore Manganese Map
+          </a>
+          <a href="prediction.html" class="btn-landing outline">
+            <i data-lucide="cpu" style="width: 16px; height: 16px; color: var(--accent-gold);"></i> View AI Predictions
+          </a>
+        </div>
+      </div>
+
+      <!-- Right 3D Interactive Earth / Satellite Visualization -->
+      <div class="hero-globe-wrapper">
+        <div class="globe-hud-badge">
+          <i data-lucide="satellite" style="width:12px; height:12px; vertical-align:middle; margin-right:4px;"></i>
+          Live Satellites & Mineral Pins Active
+        </div>
+        <canvas id="hero-globe-canvas" class="globe-canvas" width="480" height="480"></canvas>
+      </div>
+
+    </div>
+
+    <!-- Small Statistics Bar Below Hero -->
+    <div class="stats-bar-wrapper">
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-icon-wrap">
+            <i data-lucide="layers" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div class="stat-val">25+</div>
+          <div class="stat-label">Data Layers</div>
+          <div class="stat-desc">Multispectral SWIR, VNIR, SAR, Geophysical & Magnetic Grids</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrap">
+            <i data-lucide="brain-circuit" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div class="stat-val">96.8%</div>
+          <div class="stat-label">AI-Powered Analysis</div>
+          <div class="stat-desc">Deep learning spectral anomaly & shear-zone deposit classification</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrap">
+            <i data-lucide="radar" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div class="stat-val">Real-Time</div>
+          <div class="stat-label">GIS Visualization</div>
+          <div class="stat-desc">Sub-meter optical, SAR radar penetration & live orbit ground tracks</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrap">
+            <i data-lucide="trending-down" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div class="stat-val">2026-2035</div>
+          <div class="stat-label">Production Risk Forecasting</div>
+          <div class="stat-desc">EV battery & metallurgical grade shortfall prediction models</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       PROBLEM SECTION - "Why Manganese Intelligence Matters"
+       ========================================================================= -->
+  <section class="problem-section" id="problem-section">
+    <div class="section-head-center">
+      <div class="hero-tag" style="margin-bottom:0.75rem;">
+        <i data-lucide="alert-circle" style="width:13px; height:13px;"></i> The Global Mineral Challenge
+      </div>
+      <h2>Why Manganese Intelligence Matters</h2>
+      <p>
+        Manganese is critical for steel manufacturing. Traditional mineral exploration can be expensive, slow and
+        difficult to scale.
+      </p>
+    </div>
+
+    <div class="problem-grid">
+
+      <!-- Card 1: Increasing Demand -->
+      <div class="problem-card">
+        <div class="problem-icon-wrap gold">
+          <i data-lucide="trending-up" style="width: 22px; height: 22px;"></i>
+        </div>
+        <h3>Increasing Demand</h3>
+        <p>
+          Indispensable for global steel production and surging rapidly as a key cathode material in next-generation
+          electric vehicle batteries and energy storage systems.
+        </p>
+      </div>
+
+      <!-- Card 2: Limited Exploration -->
+      <div class="problem-card">
+        <div class="problem-icon-wrap cyan">
+          <i data-lucide="compass" style="width: 22px; height: 22px;"></i>
+        </div>
+        <h3>Limited Exploration</h3>
+        <p>
+          Conventional ground geological surveys and exploratory core drillings are labor-intensive, geographically
+          restricted, highly costly, and difficult to scale globally.
+        </p>
+      </div>
+
+      <!-- Card 3: Production Uncertainty -->
+      <div class="problem-card">
+        <div class="problem-icon-wrap orange">
+          <i data-lucide="help-circle" style="width: 22px; height: 22px;"></i>
+        </div>
+        <h3>Production Uncertainty</h3>
+        <p>
+          Declining ore grades in mature open-pit and underground mines, combined with unpredictable geotechnical and
+          structural variations, create high output volatility.
+        </p>
+      </div>
+
+      <!-- Card 4: Supply Shortfall Risk -->
+      <div class="problem-card">
+        <div class="problem-icon-wrap crimson">
+          <i data-lucide="alert-triangle" style="width: 22px; height: 22px;"></i>
+        </div>
+        <h3>Supply Shortfall Risk</h3>
+        <p>
+          Heavy geopolitical concentration of high-grade reserves creates severe supply chain vulnerabilities and
+          projected multi-million-tonne annual deficits by 2027.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SOLUTION SECTION - "One Platform. Complete Mineral Intelligence."
+       ========================================================================= -->
+  <section class="solution-section" id="solution-section">
+    <div class="section-head-center">
+      <div class="hero-tag" style="margin-bottom:0.75rem;">
+        <i data-lucide="check-circle" style="width:13px; height:13px;"></i> The MnVision AI Workflow
+      </div>
+      <h2>One Platform. Complete Mineral Intelligence.</h2>
+      <p>
+        End-to-end orbital remote sensing, machine learning geological mapping, prospectivity scoring, and supply
+        forecasting pipeline.
+      </p>
+    </div>
+
+    <div class="process-steps-container">
+
+      <!-- Animated Track Line Background -->
+      <div class="process-track-line"></div>
+
+      <!-- Step 01 -->
+      <div class="step-card">
+        <div class="step-header-wrap">
+          <span class="step-number-badge">STEP 01</span>
+          <div class="step-icon-circle">
+            <i data-lucide="satellite" style="width: 20px; height: 20px;"></i>
+          </div>
+        </div>
+        <h3 class="step-title">Satellite Data</h3>
+        <p class="step-desc">
+          Collect multispectral satellite imagery and remote sensing data across SWIR, VNIR, and SAR bands.
+        </p>
+      </div>
+
+      <!-- Step 02 -->
+      <div class="step-card">
+        <div class="step-header-wrap">
+          <span class="step-number-badge">STEP 02</span>
+          <div class="step-icon-circle">
+            <i data-lucide="brain-circuit" style="width: 20px; height: 20px;"></i>
+          </div>
+        </div>
+        <h3 class="step-title">AI/ML Analysis</h3>
+        <p class="step-desc">
+          Analyze spectral, geological and terrain characteristics using deep neural alteration models.
+        </p>
+      </div>
+
+      <!-- Step 03 -->
+      <div class="step-card">
+        <div class="step-header-wrap">
+          <span class="step-number-badge">STEP 03</span>
+          <div class="step-icon-circle">
+            <i data-lucide="target" style="width: 20px; height: 20px;"></i>
+          </div>
+        </div>
+        <h3 class="step-title">Mineral Prospectivity</h3>
+        <p class="step-desc">
+          Generate manganese potential zones with probability scores and 3D geological boundary mapping.
+        </p>
+      </div>
+
+      <!-- Step 04 -->
+      <div class="step-card">
+        <div class="step-header-wrap">
+          <span class="step-number-badge">STEP 04</span>
+          <div class="step-icon-circle">
+            <i data-lucide="trending-up" style="width: 20px; height: 20px;"></i>
+          </div>
+        </div>
+        <h3 class="step-title">Supply Forecast</h3>
+        <p class="step-desc">
+          Predict future production, demand and possible supply gaps across domestic and global EV sectors.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       AI PREDICTION & MINERAL PROSPECTING SECTION
+       ========================================================================= -->
+  <section class="landing-section" id="ai-prediction-section">
+    <div class="section-head-center">
+      <div class="hero-tag" style="margin-bottom:0.75rem;">
+        <i data-lucide="cpu" style="width:13px; height:13px;"></i> Hyperspectral Geological Prospecting
+      </div>
+      <h2>AI-Driven Manganese Reserve Discovery</h2>
+      <p>
+        MnVision AI analyzes multi-satellite constellations (Sentinel-2, Cartosat, RISAT SAR, Landsat-9) to detect
+        pyrolusite, psilomelane, and braunite mineralization signatures concealed beneath overburden and vegetation.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-box">
+        <div class="feature-box-icon">
+          <i data-lucide="scan" style="width: 22px; height: 22px;"></i>
+        </div>
+        <h3>SWIR Band Ratio Indexing</h3>
+        <p>
+          Calculates precise hydroxyl absorption at 2.20 µm and 2.35 µm to differentiate high-grade manganese oxide
+          mineralization from iron-laterite host rock.
+        </p>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-box-icon">
+          <i data-lucide="radio-tower" style="width: 22px; height: 22px;"></i>
+        </div>
+        <h3>SAR Structural Penetration</h3>
+        <p>
+          X-band synthetic aperture radar maps subsurface faults, folds, and gondite stratigraphic contacts to uncover
+          blind deposits with zero surface outcrop.
+        </p>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-box-icon">
+          <i data-lucide="zap" style="width: 22px; height: 22px;"></i>
+        </div>
+        <h3>Automated Anomaly Scoring</h3>
+        <p>
+          Ensemble convolutional neural networks rank exploration targets across India, Africa, and Australia with
+          confidence metrics and 3D geological depth estimates.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       PRODUCTION RISK FORECASTING SECTION
+       ========================================================================= -->
+  <section class="landing-section" id="forecast-section">
+    <div class="section-head-center">
+      <div class="hero-tag" style="margin-bottom:0.75rem;">
+        <i data-lucide="bar-chart-3" style="width:13px; height:13px;"></i> Supply Chain Intelligence
+      </div>
+      <h2>Production Deficit & EV Demand Forecast</h2>
+      <p>
+        Predicting domestic and global manganese supply shortfalls driven by high-purity manganese sulphate (HPMSM)
+        demand for electric vehicle batteries.
+      </p>
+    </div>
+
+    <div class="forecast-showcase">
+      <div>
+        <h3 style="font-size: 1.35rem; color: #fff; margin-bottom: 0.75rem;">
+          Critical Manganese Supply Gap (2025–2030)
+        </h3>
+        <p style="color: var(--text-secondary); line-height: 1.6; font-size: 0.92rem; margin-bottom: 1.25rem;">
+          As EV battery chemistries (LMFP, NMx) scale rapidly, demand for battery-grade manganese is projected to surge
+          by 230%. Without fast-tracked new discoveries, severe deficits will emerge by 2027.
+        </p>
+
+        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+          <div
+            style="background: rgba(244,63,94,0.12); border: 1px solid rgba(244,63,94,0.3); border-radius: 8px; padding: 0.75rem 1rem;">
+            <div style="font-size: 0.72rem; color: var(--accent-crimson); font-weight:700; text-transform:uppercase;">
+              Peak Deficit</div>
+            <div style="font-size: 1.35rem; font-family:var(--font-mono); font-weight:700; color:#fff;">-3.25 MT</div>
+          </div>
+
+          <div
+            style="background: rgba(255,183,3,0.12); border: 1px solid rgba(255,183,3,0.3); border-radius: 8px; padding: 0.75rem 1rem;">
+            <div style="font-size: 0.72rem; color: var(--accent-gold); font-weight:700; text-transform:uppercase;">Key
+              Target Basin</div>
+            <div style="font-size: 1.15rem; font-family:var(--font-mono); font-weight:700; color:#fff;">
+              Balaghat-Keonjhar</div>
+          </div>
+        </div>
+
+        <a href="#dashboard-app" class="btn-landing primary btn-explore-map">
+          <i data-lucide="satellite" style="width: 15px; height: 15px;"></i> Launch Full Command Simulator
+        </a>
+      </div>
+
+      <!-- Forecast Table -->
+      <div
+        style="background: rgba(4,9,24,0.8); border: 1px solid var(--border-glass); border-radius: 12px; padding: 1rem; overflow-x:auto;">
+        <table class="forecast-table">
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Global Demand</th>
+              <th>AI Predicted Output</th>
+              <th>Balance / Deficit</th>
+            </tr>
+          </thead>
+          <tbody id="forecast-table-body">
+            <!-- Populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       INTERACTIVE GEOSPATIAL COMMAND DASHBOARD WORKSPACE
+       ========================================================================= -->
+  <section class="dashboard-section" id="dashboard-app">
+
+    <div class="dashboard-title-bar">
+      <div>
+        <h2 style="font-size: 1.45rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="compass" style="color:var(--accent-gold); width:20px; height:20px;"></i>
+          MnVision AI <span style="color:var(--accent-gold);">Geospatial Command Center</span>
+        </h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted);">
+          Real-time satellite constellation tracking, multispectral geological layers, and manganese deposit analytics.
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem;">
+        <button class="hud-btn primary" id="btn-open-tasking">
+          <i data-lucide="send" style="width: 14px; height: 14px;"></i> Task Satellite
+        </button>
+        <button class="hud-btn" id="btn-export-geojson">
+          <i data-lucide="download" style="width: 14px; height: 14px;"></i> Export GeoJSON
+        </button>
+      </div>
+    </div>
+
+    <!-- Top Mission Control Telemetry Header Bar -->
+    <header class="header-bar">
+      <div class="brand-badge">
+        <div class="brand-titles">
+          <h1>BHUVAN <span>MINERAL TELEMETRY</span></h1>
+          <div class="brand-sub">ISRO Earth Observation & Mineral Operations</div>
+        </div>
+      </div>
+
+      <!-- Live Telemetry Strip -->
+      <div class="telemetry-strip">
+        <div class="telemetry-item">
+          <div class="telemetry-label">
+            <span class="status-dot"></span> Telemetry Link
+          </div>
+          <div class="telemetry-val" style="color: #10b981;">NOMINAL (LOCK)</div>
+        </div>
+
+        <div class="telemetry-item">
+          <div class="telemetry-label">
+            <i data-lucide="radio" style="width:12px; height:12px; color:var(--accent-cyan);"></i> Downlink Rate
+          </div>
+          <div class="telemetry-val">850.4 Mbps (X-Band)</div>
+        </div>
+
+        <div class="telemetry-item">
+          <div class="telemetry-label">
+            <i data-lucide="clock" style="width:12px; height:12px; color:var(--accent-gold);"></i> UTC Time
+          </div>
+          <div class="telemetry-val" id="utc-clock">00:00:00 UTC</div>
+        </div>
+
+        <div class="telemetry-item">
+          <div class="telemetry-label">
+            <i data-lucide="compass" style="width:12px; height:12px; color:var(--accent-gold);"></i> IST Station Time
+          </div>
+          <div class="telemetry-val" id="ist-clock">00:00:00 IST</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Grid Workspace -->
+    <main class="app-container">
+
+      <!-- Left Column: Fleet Constellation & Subsystems -->
+      <aside class="left-sidebar">
+        <div class="glass-panel" style="flex: 1;">
+          <div class="section-header">
+            <div class="section-title">
+              <i data-lucide="satellite" style="width: 16px; height: 16px;"></i> Geological Fleet
+            </div>
+            <span class="badge-tag badge-gold">4 ORBITING</span>
+          </div>
+          <div class="fleet-list" id="fleet-list-container">
+            <!-- Populated by JavaScript -->
+          </div>
+        </div>
+
+        <div class="glass-panel" style="margin-top: 0.25rem;">
+          <div class="section-header">
+            <div class="section-title">
+              <i data-lucide="cpu" style="width: 16px; height: 16px;"></i> Subsystem Health
+            </div>
+            <span class="badge-tag badge-cyan" id="selected-sat-title">EOS-06</span>
+          </div>
+          <div class="telemetry-gauge-grid">
+            <div class="gauge-item">
+              <div class="gauge-header">
+                <span>SOLAR ARRAY</span>
+                <strong id="gauge-power-val" style="color:var(--accent-gold);">860 W</strong>
+              </div>
+              <div class="gauge-bar-wrapper">
+                <div class="gauge-bar-fill" id="gauge-power-fill" style="width: 65%;"></div>
+              </div>
+            </div>
+
+            <div class="gauge-item">
+              <div class="gauge-header">
+                <span>BATTERY SOC</span>
+                <strong id="gauge-battery-val" style="color:#10b981;">94%</strong>
+              </div>
+              <div class="gauge-bar-wrapper">
+                <div class="gauge-bar-fill emerald" id="gauge-battery-fill" style="width: 94%;"></div>
+              </div>
+            </div>
+
+            <div class="gauge-item">
+              <div class="gauge-header">
+                <span>PAYLOAD TEMP</span>
+                <strong id="gauge-temp-val" style="color:#fff;">18.4 °C</strong>
+              </div>
+              <div class="gauge-bar-wrapper">
+                <div class="gauge-bar-fill cyan" id="gauge-temp-fill" style="width: 46%;"></div>
+              </div>
+            </div>
+
+            <div class="gauge-item">
+              <div class="gauge-header">
+                <span>X-BAND SNR</span>
+                <strong id="gauge-snr-val" style="color:var(--accent-cyan);">28.4 dB</strong>
+              </div>
+              <div class="gauge-bar-wrapper">
+                <div class="gauge-bar-fill cyan" id="gauge-snr-fill" style="width: 88%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Center Column: Leaflet Map Viewer -->
+      <section class="center-viewport">
+        <div class="map-viewport-wrapper">
+          <div id="leaflet-map"></div>
+          <div class="map-grid-overlay"></div>
+          <div class="map-crosshairs"></div>
+
+          <!-- Layer Switcher -->
+          <div class="map-hud-top-left">
+            <div class="map-layer-switcher">
+              <button class="layer-btn active" data-layer="optical">
+                <i data-lucide="eye" style="width:13px; height:13px;"></i> Optical
+              </button>
+              <button class="layer-btn" data-layer="sar">
+                <i data-lucide="radar" style="width:13px; height:13px;"></i> SAR Radar
+              </button>
+              <button class="layer-btn" data-layer="ndvi">
+                <i data-lucide="sprout" style="width:13px; height:13px;"></i> Mineral Index
+              </button>
+              <button class="layer-btn" data-layer="thermal">
+                <i data-lucide="flame" style="width:13px; height:13px;"></i> Thermal
+              </button>
+              <button class="layer-btn" data-layer="night">
+                <i data-lucide="moon" style="width:13px; height:13px;"></i> Night Lights
+              </button>
+            </div>
+          </div>
+
+          <!-- Bottom HUD -->
+          <div class="map-hud-bottom">
+            <div class="live-cursor-hud">
+              <div>LAT: <strong id="cursor-lat">21.805° N</strong></div>
+              <div>LON: <strong id="cursor-lon">80.185° E</strong></div>
+              <div>STATION: <strong style="color:#10b981;">NRSC SHADNAGAR</strong></div>
+            </div>
+
+            <div class="orbit-controls-hud">
+              <span style="font-size:10px; color:var(--text-muted); font-weight:700;">SPEED:</span>
+              <button class="sim-speed-btn active" data-speed="1">1x</button>
+              <button class="sim-speed-btn" data-speed="5">5x</button>
+              <button class="sim-speed-btn" data-speed="20">20x</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- AOI Quick Presets -->
+        <div class="aoi-preset-bar">
+          <span class="aoi-preset-label"><i data-lucide="target"
+              style="width:13px; height:13px; vertical-align:middle; margin-right:3px; color:var(--accent-gold);"></i>
+            Mn Focus Target:</span>
+          <div id="aoi-presets-container" style="display:flex; gap:0.5rem; flex-wrap:nowrap;">
+            <!-- Populated by JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: AI Geological Anomalies & Spectral Analytics -->
+      <aside class="right-sidebar">
+        <div class="glass-panel" style="flex: 1.2;">
+          <div class="section-header">
+            <div class="section-title">
+              <i data-lucide="alert-triangle" style="width: 16px; height: 16px; color:var(--accent-gold);"></i> AI
+              Target Alerts
+            </div>
+            <span class="badge-tag badge-gold">3 ACTIVE</span>
+          </div>
+          <div class="incident-list" id="incident-list-container">
+            <!-- Populated by JavaScript -->
+          </div>
+        </div>
+
+        <div class="glass-panel" style="flex: 1;">
+          <div class="section-header">
+            <div class="section-title">
+              <i data-lucide="activity" style="width: 16px; height: 16px;"></i> Spectral Signatures
+            </div>
+            <span class="badge-tag badge-gold" id="aoi-stats-title">Balaghat Belt</span>
+          </div>
+
+          <div class="analytics-box">
+            <div class="spectral-metrics-grid">
+              <div class="metric-tile">
+                <span class="metric-tile-title">Pyrolusite Grade</span>
+                <span class="metric-tile-val" id="aoi-stat-1-val" style="color:var(--accent-gold);">48.5% Mn</span>
+                <span class="metric-tile-sub" id="aoi-stat-1-sub">High Battery Grade</span>
+              </div>
+              <div class="metric-tile">
+                <span class="metric-tile-title">Reserve Estimate</span>
+                <span class="metric-tile-val" id="aoi-stat-2-val">24.8 MT</span>
+                <span class="metric-tile-sub" id="aoi-stat-2-sub">Deposit Lifespan</span>
+              </div>
+            </div>
+
+            <!-- Canvas Graph -->
+            <div
+              style="position:relative; width:100%; height:80px; background:rgba(3,8,20,0.6); border-radius:6px; border:1px solid var(--border-glass);">
+              <canvas id="spectral-time-canvas" width="320" height="80" style="width:100%; height:100%;"></canvas>
+            </div>
+
+            <!-- Split Comparison -->
+            <div
+              style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-top:2px;">
+              Spectral Alteration (Optical Outcrop vs SWIR Band Ratio)
+            </div>
+
+            <div class="spectral-split-container" id="spectral-split-box">
+              <div class="split-layer before"
+                style="background: linear-gradient(135deg, #09203f 0%, #537895 100%); display:flex; align-items:flex-end; padding:6px;">
+                <span
+                  style="font-size:9px; background:rgba(0,0,0,0.7); padding:2px 5px; border-radius:3px; color:#fff;">Standard
+                  Optical</span>
+              </div>
+              <div class="split-layer after" id="split-after-layer"
+                style="background: linear-gradient(135deg, #f12711 0%, #f5af19 100%); clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%); display:flex; align-items:flex-end; justify-content:flex-end; padding:6px;">
+                <span
+                  style="font-size:9px; background:rgba(0,0,0,0.7); padding:2px 5px; border-radius:3px; color:var(--accent-gold);">SWIR
+                  Mn Alteration</span>
+              </div>
+              <div class="split-handle" id="split-slider-handle" style="left: 50%;">
+                <div class="split-handle-btn">
+                  <i data-lucide="move-horizontal" style="width:12px; height:12px;"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </main>
+  </section>
+
+  <!-- =========================================================================
+       ABOUT & FOOTER SECTION
+       ========================================================================= -->
+  <section class="landing-section" id="about-section"
+    style="border-top: 1px solid var(--border-subtle); padding-bottom: 3rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+      <div class="logo-wrap">
+        <div class="logo-badge">
+          <i data-lucide="layers" style="width: 22px; height: 22px;"></i>
+        </div>
+        <div class="logo-text">MnVision <span>AI</span></div>
+      </div>
+
+      <div style="color: var(--text-muted); font-size: 0.85rem;">
+        © 2026 MnVision AI • Space-Tech & Geospatial Mineral Intelligence Platform.
+      </div>
+    </div>
+  </section>
+
+  <!-- Satellite Imaging Tasking Modal -->
+  <div class="modal-backdrop" id="tasking-modal">
+    <div class="modal-dialog">
+      <div class="modal-head">
+        <div style="display:flex; align-items:center; gap:0.5rem; color:#fff; font-weight:700; font-size:1rem;">
+          <i data-lucide="send" style="color:var(--accent-gold); width:18px; height:18px;"></i>
+          Satellite Acquisition Tasking Order
+        </div>
+        <button id="btn-close-tasking"
+          style="background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:1.2rem;">✕</button>
+      </div>
+
+      <form id="tasking-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Mission / Target Name</label>
+            <input type="text" id="task-target-name" class="form-input"
+              placeholder="e.g. Balaghat North Extension Hyperspectral Acquisition" required />
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;">
+            <div class="form-group">
+              <label class="form-label">Target Latitude (°)</label>
+              <input type="number" step="0.0001" id="task-lat" class="form-input" value="21.8050" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Target Longitude (°)</label>
+              <input type="number" step="0.0001" id="task-lon" class="form-input" value="80.1850" required />
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;">
+            <div class="form-group">
+              <label class="form-label">Satellite Platform</label>
+              <select id="task-satellite" class="form-select">
+                <option value="CARTOSAT-3 (Optical)">CARTOSAT-3 (0.28m PAN / Sub-meter MS)</option>
+                <option value="RISAT-2BR1 (SAR Radar)">RISAT-2BR1 (X-Band SAR Subsurface)</option>
+                <option value="EOS-06 (Hyperspectral)">EOS-06 (Multispectral Mineral Mapper)</option>
+                <option value="SENTINEL-2A (SWIR)">SENTINEL-2A (SWIR Band 11/12/8A)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Sensor Mode</label>
+              <select id="task-mode" class="form-select">
+                <option value="SWIR Mineral Alteration">SWIR Mineral Alteration (Pyrolusite)</option>
+                <option value="Spotlight High-Res">Spotlight High-Res (Target Focus)</option>
+                <option value="Stripmap Standard">Stripmap Standard (Wide Swath)</option>
+                <option value="Stereo 3D DEM">Stereo 3D Mine Topography</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;">
+            <div class="form-group">
+              <label class="form-label">Tasking Priority</label>
+              <select id="task-priority" class="form-select">
+                <option value="HIGH">🟠 HIGH PRIORITY (Within 12 Hours)</option>
+                <option value="CRITICAL">🔴 FLASH EMERGENCY (Next Pass Intercept)</option>
+                <option value="ROUTINE">🟢 ROUTINE OBSERVATION (Next 48 Hours)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Downlink Ground Station</label>
+              <select class="form-select">
+                <option>NRSC Shadnagar (Direct X-Band)</option>
+                <option>SDSC Sriharikota</option>
+                <option>Antarctica Bharati Polar Node</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="hud-btn" id="btn-cancel-tasking">Cancel</button>
+          <button type="submit" class="hud-btn primary">
+            <i data-lucide="check-circle" style="width:14px; height:14px;"></i> Transmit Acquisition Order
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toast-notification">
+    <i data-lucide="info" style="color:var(--accent-gold); width:18px; height:18px;"></i>
+    <span id="toast-message" style="font-size:0.85rem; color:#fff; font-weight:500;">Telemetry Synchronized</span>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Main Script Module -->
+  <script type="module" src="js/app.js"></script>
+
+</body>
+
+</html>

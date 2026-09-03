@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manganese Strategic Risk Analysis — MnVision AI</title>
+  <meta name="description" content="Strategic manganese exploration, production, and supply gap risk matrix with 2026–2030 predictive timeline." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Custom Space-Tech & Risk Analysis CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    .risk-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: calc(100vh - 70px);
+    }
+
+    /* 4 Key Risk Summary Cards */
+    .risk-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .risk-summary-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 1.5rem;
+      backdrop-filter: var(--glass-blur);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s ease;
+    }
+
+    .risk-summary-card.medium { border-left: 4px solid var(--accent-gold); }
+    .risk-summary-card.high { border-left: 4px solid var(--accent-orange); }
+    .risk-summary-card.critical { 
+      border-left: 4px solid var(--accent-crimson);
+      box-shadow: 0 0 20px rgba(244, 63, 94, 0.15);
+    }
+
+    .risk-summary-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hud);
+      background: var(--bg-panel-hover);
+    }
+
+    .risk-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+    }
+
+    .risk-card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .risk-card-val {
+      font-size: 1.45rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      margin: 0.4rem 0;
+    }
+
+    .risk-card-desc {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    /* 2-Column Section: Risk Matrix & Timeline */
+    .risk-main-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Risk Matrix Grid */
+    .matrix-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.75rem;
+      backdrop-filter: var(--glass-blur-lg);
+    }
+
+    .matrix-board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 85px);
+      gap: 6px;
+      margin-top: 1rem;
+      background: rgba(3, 7, 18, 0.6);
+      padding: 8px;
+      border-radius: 10px;
+      border: 1px solid var(--border-glass);
+    }
+
+    .matrix-cell {
+      border-radius: 6px;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow-y: auto;
+      transition: all 0.2s;
+    }
+
+    .matrix-cell.matrix-low { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.25); }
+    .matrix-cell.matrix-medium { background: rgba(255, 183, 3, 0.12); border: 1px solid rgba(255, 183, 3, 0.25); }
+    .matrix-cell.matrix-high { background: rgba(251, 133, 0, 0.15); border: 1px solid rgba(251, 133, 0, 0.35); }
+    .matrix-cell.matrix-critical { background: rgba(244, 63, 94, 0.18); border: 1px solid rgba(244, 63, 94, 0.45); }
+
+    .matrix-risk-node {
+      background: rgba(4, 9, 24, 0.9);
+      border: 1px solid var(--border-glass);
+      border-radius: 4px;
+      padding: 3px 6px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      line-height: 1.2;
+    }
+
+    .matrix-risk-node:hover {
+      border-color: var(--accent-gold);
+      background: #0b1736;
+    }
+
+    /* Timeline Container */
+    .timeline-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.75rem;
+      backdrop-filter: var(--glass-blur-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .timeline-step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 10px;
+      padding: 1rem 1.15rem;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .timeline-step-card.critical {
+      border-color: rgba(244, 63, 94, 0.4);
+      background: rgba(244, 63, 94, 0.05);
+    }
+
+    .timeline-step-card:hover {
+      border-color: var(--accent-gold);
+      background: var(--bg-panel-hover);
+    }
+
+    .timeline-step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .timeline-year {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      margin-right: 0.5rem;
+    }
+
+    .timeline-step-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+      display: inline-block;
+    }
+
+    @media (max-width: 1024px) {
+      .risk-cards-grid { grid-template-columns: repeat(2, 1fr); }
+      .risk-main-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .risk-cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       PAGE NAVBAR
+       ========================================================================= -->
+  <nav class="landing-nav">
+    <a href="index.html" class="logo-wrap">
+      <div class="logo-badge">
+        <i data-lucide="layers" style="width: 22px; height: 22px;"></i>
+      </div>
+      <div class="logo-text">MnVision <span>AI</span></div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#home" class="nav-link">Home</a></li>
+      <li><a href="dashboard.html" class="nav-link">GIS Dashboard</a></li>
+      <li><a href="prediction.html" class="nav-link">AI Prediction</a></li>
+      <li><a href="forecast.html" class="nav-link">Production Forecast</a></li>
+      <li><a href="risk-analysis.html" class="nav-link active">Risk Analysis</a></li>
+      <li><a href="index.html#about-section" class="nav-link">About</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="dashboard.html" class="btn-landing primary">
+        <i data-lucide="compass" style="width: 15px; height: 15px;"></i> Launch GIS Map
+      </a>
+    </div>
+  </nav>
+
+  <!-- =========================================================================
+       MAIN RISK ANALYSIS VIEW
+       ========================================================================= -->
+  <div class="risk-container">
+    
+    <div style="margin-bottom: 2rem;">
+      <div class="hero-tag">
+        <i data-lucide="shield-alert" style="width: 13px; height: 13px;"></i>
+        Strategic Mineral Security & Vulnerability Matrix
+      </div>
+      <h1 style="font-size: 2.35rem; font-weight: 700; color: #fff; margin-top: 0.5rem;">
+        Manganese Risk Analysis & 2026–2030 Timeline
+      </h1>
+      <p style="color: var(--text-secondary); font-size: 1rem; max-width: 760px;">
+        Multi-dimensional risk assessment evaluating exploration bottlenecks, production depletion in legacy pits, exponential EV battery demand, and critical domestic supply shortfalls.
+      </p>
+    </div>
+
+    <!-- =======================================================================
+         4 KEY RISK OVERVIEW CARDS
+         ======================================================================= -->
+    <div class="risk-cards-grid">
+      
+      <!-- Card 1: Exploration Risk -->
+      <div class="risk-summary-card medium">
+        <div>
+          <div class="risk-card-head">
+            <span class="risk-card-title">Exploration Risk</span>
+            <span class="badge-tag badge-gold">MEDIUM</span>
+          </div>
+          <div class="risk-card-val" style="color: var(--accent-gold);">
+            Medium <span style="font-size:0.8rem; color:var(--text-muted);">(58/100)</span>
+          </div>
+          <p class="risk-card-desc">
+            Subsurface blind deposits in Sausar & Bonai require deeper core drilling; high initial exploration capex mitigated by satellite AI prospectivity mapping.
+          </p>
+        </div>
+        <div style="margin-top: 0.85rem; font-size: 0.72rem; color: var(--accent-gold); display: flex; align-items: center; gap: 0.3rem;">
+          <i data-lucide="compass" style="width: 13px; height: 13px;"></i> 127 AI Potential Zones Identified
+        </div>
+      </div>
+
+      <!-- Card 2: Production Risk -->
+      <div class="risk-summary-card high">
+        <div>
+          <div class="risk-card-head">
+            <span class="risk-card-title">Production Risk</span>
+            <span class="badge-tag badge-gold">HIGH</span>
+          </div>
+          <div class="risk-card-val" style="color: var(--accent-orange);">
+            High <span style="font-size:0.8rem; color:var(--text-muted);">(76/100)</span>
+          </div>
+          <p class="risk-card-desc">
+            Grade degradation across mature open-cast pits in Maharashtra & Odisha. Transitioning to underground operations incurs 4–6 year infrastructure lead times.
+          </p>
+        </div>
+        <div style="margin-top: 0.85rem; font-size: 0.72rem; color: var(--accent-orange); display: flex; align-items: center; gap: 0.3rem;">
+          <i data-lucide="pickaxe" style="width: 13px; height: 13px;"></i> Avg Grade Decline: -1.2%/yr
+        </div>
+      </div>
+
+      <!-- Card 3: Demand Growth -->
+      <div class="risk-summary-card high">
+        <div>
+          <div class="risk-card-head">
+            <span class="risk-card-title">Demand Growth</span>
+            <span class="badge-tag badge-gold">HIGH</span>
+          </div>
+          <div class="risk-card-val" style="color: var(--accent-orange);">
+            High <span style="font-size:0.8rem; color:var(--text-muted);">(84/100)</span>
+          </div>
+          <p class="risk-card-desc">
+            Steel sector expansion coupled with 230% surge in High-Purity Manganese Sulphate (HPMSM) demand for EV battery chemistry (LMFP, NMx).
+          </p>
+        </div>
+        <div style="margin-top: 0.85rem; font-size: 0.72rem; color: var(--accent-orange); display: flex; align-items: center; gap: 0.3rem;">
+          <i data-lucide="trending-up" style="width: 13px; height: 13px;"></i> 15.0 MT Projected by 2030
+        </div>
+      </div>
+
+      <!-- Card 4: Supply Gap -->
+      <div class="risk-summary-card critical">
+        <div>
+          <div class="risk-card-head">
+            <span class="risk-card-title">Supply Gap</span>
+            <span class="badge-tag badge-critical">CRITICAL</span>
+          </div>
+          <div class="risk-card-val" style="color: var(--accent-crimson);">
+            Critical <span style="font-size:0.8rem; color:var(--text-muted);">(94/100)</span>
+          </div>
+          <p class="risk-card-desc">
+            Domestic production ceiling of 10.2 MT in 2030 creates an acute 4.8 MT structural shortfall, requiring 83% import surge and price vulnerability.
+          </p>
+        </div>
+        <div style="margin-top: 0.85rem; font-size: 0.72rem; color: var(--accent-crimson); display: flex; align-items: center; gap: 0.3rem;">
+          <i data-lucide="alert-triangle" style="width: 13px; height: 13px;"></i> -4.8 MT Annual Deficit by 2030
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =======================================================================
+         RISK MATRIX & 2026–2030 PREDICTED TIMELINE
+         ======================================================================= -->
+    <div class="risk-main-grid">
+      
+      <!-- Interactive Risk Matrix (4x4) -->
+      <div class="matrix-panel">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="grid" style="color: var(--accent-gold); width: 18px; height: 18px;"></i>
+              Strategic Risk Matrix (Likelihood vs Impact)
+            </h3>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">
+              Interactive 4x4 matrix categorized into Low, Medium, High, and Critical risk zones.
+            </div>
+          </div>
+          
+          <!-- Legend -->
+          <div style="display: flex; gap: 0.5rem; font-size: 0.68rem;">
+            <span style="color:#10b981;">● Low</span>
+            <span style="color:#ffb703;">● Medium</span>
+            <span style="color:#fb8500;">● High</span>
+            <span style="color:#f43f5e;">● Critical</span>
+          </div>
+        </div>
+
+        <!-- Matrix Board Grid -->
+        <div style="position: relative; margin-top: 1rem;">
+          <div style="position: absolute; left: -24px; top: 50%; transform: rotate(-90deg) translateX(50%); font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">
+            Impact →
+          </div>
+          <div class="matrix-board" id="risk-matrix-grid">
+            <!-- Populated by JavaScript -->
+          </div>
+          <div style="text-align: center; font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 6px;">
+            Likelihood (Probability of Occurrence) →
+          </div>
+        </div>
+      </div>
+
+      <!-- 2026–2030 Predicted Risk Timeline -->
+      <div class="timeline-panel">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+            <i data-lucide="clock" style="color: var(--accent-gold); width: 18px; height: 18px;"></i>
+            Predicted Risk Timeline (2026–2030)
+          </h3>
+          <span class="badge-tag badge-gold">5-YEAR FORECAST</span>
+        </div>
+
+        <div id="risk-timeline-container" style="display: flex; flex-direction: column; gap: 0.85rem; max-height: 480px; overflow-y: auto;">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Risk Module Script -->
+  <script type="module" src="js/risk-analysis.js"></script>
+
+</body>
+</html>

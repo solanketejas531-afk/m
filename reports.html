@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Mineral Recommendations & Report Generation — MnVision AI</title>
+  <meta name="description" content="AI Exploration Recommendations and Automated PDF Report Generation for Mineral Prospectivity and Supply Forecasts." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Custom Space-Tech & Report CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    .reports-container {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: calc(100vh - 70px);
+    }
+
+    /* Recommendations Grid */
+    .rec-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .recommendation-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      padding: 1.35rem;
+      backdrop-filter: var(--glass-blur);
+      transition: all 0.25s ease;
+    }
+
+    .recommendation-card.critical { border-left: 4px solid var(--accent-crimson); }
+    .recommendation-card.high { border-left: 4px solid var(--accent-gold); }
+    .recommendation-card.medium { border-left: 4px solid var(--accent-cyan); }
+
+    .recommendation-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hud);
+      border-color: rgba(255, 183, 3, 0.4);
+    }
+
+    .rec-icon-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: rgba(255, 183, 3, 0.12);
+      color: var(--accent-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Official Report Document Style */
+    .official-report-sheet {
+      background: rgba(4, 9, 24, 0.92);
+      border: 1px solid var(--border-bright);
+      border-radius: 14px;
+      padding: 2.5rem;
+      backdrop-filter: var(--glass-blur-lg);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 183, 3, 0.12);
+      margin-bottom: 2rem;
+    }
+
+    .report-header-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--border-subtle);
+      margin-bottom: 1.75rem;
+    }
+
+    .report-section-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .report-2col-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .report-info-box {
+      background: rgba(8, 16, 38, 0.6);
+      border: 1px solid var(--border-glass);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    /* Print Styles for Direct PDF Export */
+    @media print {
+      body {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      .landing-nav, .hero-tag, .btn-landing, .no-print, .reports-container > div:first-child {
+        display: none !important;
+      }
+      .reports-container {
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+      .official-report-sheet {
+        background: #fff !important;
+        color: #111 !important;
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+        padding: 1rem !important;
+      }
+      .official-report-sheet * {
+        color: #111 !important;
+        text-shadow: none !important;
+      }
+      .badge-tag {
+        border: 1px solid #333 !important;
+        color: #000 !important;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .rec-grid, .report-2col-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       PAGE NAVBAR
+       ========================================================================= -->
+  <nav class="landing-nav no-print">
+    <a href="index.html" class="logo-wrap">
+      <div class="logo-badge">
+        <i data-lucide="layers" style="width: 22px; height: 22px;"></i>
+      </div>
+      <div class="logo-text">MnVision <span>AI</span></div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#home" class="nav-link">Home</a></li>
+      <li><a href="dashboard.html" class="nav-link">GIS Dashboard</a></li>
+      <li><a href="prediction.html" class="nav-link">AI Prediction</a></li>
+      <li><a href="forecast.html" class="nav-link">Production Forecast</a></li>
+      <li><a href="risk-analysis.html" class="nav-link">Risk Analysis</a></li>
+      <li><a href="analytics.html" class="nav-link">Analytics</a></li>
+      <li><a href="reports.html" class="nav-link active">Reports</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="dashboard.html" class="btn-landing primary">
+        <i data-lucide="compass" style="width: 15px; height: 15px;"></i> Launch GIS Map
+      </a>
+    </div>
+  </nav>
+
+  <!-- =========================================================================
+       MAIN REPORTS CONTAINER
+       ========================================================================= -->
+  <div class="reports-container">
+    
+    <div style="margin-bottom: 2rem;">
+      <div class="hero-tag">
+        <i data-lucide="cpu" style="width: 13px; height: 13px;"></i>
+        Intelligent Mineral Strategy & PDF Dossier
+      </div>
+      <h1 style="font-size: 2.35rem; font-weight: 700; color: #fff; margin-top: 0.5rem;">
+        AI Recommendations & Report Generation
+      </h1>
+      <p style="color: var(--text-secondary); font-size: 1rem; max-width: 760px;">
+        Automated strategic recommendations synthesized by machine learning algorithms with one-click full exploration dossier generation.
+      </p>
+    </div>
+
+    <!-- =======================================================================
+         1. AI RECOMMENDATIONS SECTION
+         ======================================================================= -->
+    <div style="margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center;">
+      <h3 style="font-size: 1.25rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+        <i data-lucide="sparkles" style="color: var(--accent-gold); width: 18px; height: 18px;"></i>
+        AI Strategic Recommendations
+      </h3>
+      <span class="badge-tag badge-gold">ACTIONABLE INSIGHTS</span>
+    </div>
+
+    <div class="rec-grid" id="recommendations-grid">
+      <!-- Populated by JavaScript -->
+    </div>
+
+    <!-- =======================================================================
+         2. OFFICIAL REPORT DOSSIER GENERATION
+         ======================================================================= -->
+    <div class="no-print" style="margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="file-text" style="color: var(--accent-gold); width: 18px; height: 18px;"></i>
+          Mineral Prospectivity & Strategy Report Dossier
+        </h3>
+        <div style="font-size: 0.78rem; color: var(--text-muted);">
+          Select target location below to dynamically compile satellite analysis, probability, confidence, forecast, and risks.
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <select id="report-zone-select" class="form-select" style="min-width: 260px;">
+          <option value="zone-balaghat-north">Balaghat North-East Extension (MP)</option>
+          <option value="zone-keonjhar-bonai">Bonai-Keonjhar Southern Ridge (Odisha)</option>
+          <option value="zone-nagpur-mansar">Mansar-Kandri West Extension (MH)</option>
+          <option value="zone-sandur-bellary">Sandur Schist Belt (Karnataka)</option>
+        </select>
+
+        <button class="btn-landing primary" id="btn-export-pdf" style="padding: 0.65rem 1.25rem;">
+          <i data-lucide="download" style="width: 16px; height: 16px;"></i> Export as PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- Official Report Document Paper -->
+    <div class="official-report-sheet" id="report-dossier-card">
+      
+      <!-- Report Header -->
+      <div class="report-header-banner">
+        <div>
+          <div style="font-size: 0.75rem; color: var(--accent-gold); font-family: var(--font-mono); font-weight: 700; text-transform: uppercase;">
+            CONFIDENTIAL • MINERAL INTELLIGENCE DOSSIER
+          </div>
+          <h2 id="rep-loc-title" style="font-size: 1.6rem; font-weight: 700; color: #fff; margin-top: 0.25rem;">
+            Balaghat North-East Extension (Madhya Pradesh)
+          </h2>
+          <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.2rem;">
+            Target Coordinates: <span id="rep-coords" style="color: #fff; font-family: var(--font-mono);">21.845° N, 80.220° E</span>
+          </div>
+        </div>
+
+        <div style="text-align: right;">
+          <div class="logo-text" style="font-size: 1.2rem;">MnVision <span>AI</span></div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">
+            Compiled: <span id="rep-date">03 Sep 2026</span>
+          </div>
+          <span class="badge-tag badge-gold" style="margin-top: 0.4rem;">VERIFIED DOSSIER</span>
+        </div>
+      </div>
+
+      <!-- Key Metrics Row -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.85rem; margin-bottom: 1.75rem;">
+        <div class="inspector-metric-box">
+          <div class="label">Manganese Probability</div>
+          <div class="val" id="rep-prob" style="color: var(--accent-gold);">92%</div>
+        </div>
+        <div class="inspector-metric-box">
+          <div class="label">Confidence Score</div>
+          <div class="val" id="rep-conf" style="color: var(--accent-cyan);">87%</div>
+        </div>
+        <div class="inspector-metric-box">
+          <div class="label">Estimated Resource</div>
+          <div class="val" id="rep-resource" style="color: #fff;">2.4 MT</div>
+        </div>
+        <div class="inspector-metric-box">
+          <div class="label">Ore Grade Target</div>
+          <div class="val" id="rep-grade" style="color: #10b981;">46.8% Mn</div>
+        </div>
+      </div>
+
+      <!-- 2-Column Details: Satellite & Geological -->
+      <div class="report-2col-grid">
+        
+        <div class="report-info-box">
+          <div class="report-section-title">
+            <i data-lucide="satellite" style="width: 14px; height: 14px;"></i> Satellite & Spectral Analysis
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.82rem;">
+            <div>SWIR Absorption Peak: <strong id="rep-swir" style="color:#fff;">2.20 µm (Pyrolusite)</strong></div>
+            <div>SAR Structural Feature: <strong id="rep-sar" style="color:#fff;">Fault-Contact Shear Anomaly</strong></div>
+            <div>Target Depth Interval: <strong id="rep-depth" style="color:#fff;">12m - 140m Depth</strong></div>
+          </div>
+        </div>
+
+        <div class="report-info-box">
+          <div class="report-section-title">
+            <i data-lucide="compass" style="width: 14px; height: 14px;"></i> Geological Indicators
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.82rem;">
+            <div>Stratigraphic Unit: <strong id="rep-formation" style="color:#fff;">Sausar Group (Gondite & Metasediments)</strong></div>
+            <div>Lithological Contact: <strong style="color:#fff;">Mica Schist & Braunite Manganiferous Bed</strong></div>
+            <div>Host Rock Type: <strong style="color:#fff;">Proterozoic Supergroup Metamorphics</strong></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Production Forecast & Risk Assessment -->
+      <div class="report-2col-grid">
+        
+        <div class="report-info-box">
+          <div class="report-section-title">
+            <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i> Production Forecast & Demand
+          </div>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+            Domestic production is projected at <strong>10.2 MT</strong> against a forecasted demand of <strong>15.0 MT</strong> in 2030. Accelerating this zone's extraction will offset up to <strong>16%</strong> of regional industrial shortfalls.
+          </p>
+        </div>
+
+        <div class="report-info-box">
+          <div class="report-section-title">
+            <i data-lucide="shield-alert" style="width: 14px; height: 14px;"></i> Risk Assessment
+          </div>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+            <strong style="color:var(--accent-crimson);">Critical 4.8 MT Supply Gap</strong> risk detected if domestic exploration capex is delayed. Infrastructure proximity to existing rail heads mitigates logistics lead time.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- AI Recommendations Summary in Report -->
+      <div style="background: rgba(255, 183, 3, 0.08); border: 1px solid rgba(255, 183, 3, 0.3); border-radius: 8px; padding: 1.15rem;">
+        <div class="report-section-title">
+          <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> AI Recommended Action Plan
+        </div>
+        <p id="rep-action" style="font-size: 0.88rem; color: #fff; line-height: 1.55; margin: 0;">
+          Schedule Priority-1 Core Drilling across 6 boreholes to delineate ore geometry and initiate environmental clearance documentation.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Reports Script Module -->
+  <script type="module" src="js/reports.js"></script>
+
+</body>
+</html>

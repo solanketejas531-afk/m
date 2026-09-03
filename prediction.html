@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Mineral Prospectivity Prediction — MnVision AI</title>
+  <meta name="description" content="AI Mineral Prospectivity Prediction with multi-spectral inference, probability gauge and explainable AI visualization." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Custom Space-Tech & Prediction CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    .prediction-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: calc(100vh - 70px);
+    }
+
+    .prediction-grid-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    /* Input Panel */
+    .input-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 2rem;
+      backdrop-filter: var(--glass-blur-lg);
+      box-shadow: var(--shadow-hud);
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* Dropzone */
+    .file-dropzone {
+      border: 2px dashed rgba(255, 183, 3, 0.3);
+      border-radius: 10px;
+      background: rgba(6, 13, 29, 0.6);
+      padding: 1.5rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .file-dropzone:hover {
+      border-color: var(--accent-gold);
+      background: rgba(255, 183, 3, 0.05);
+    }
+
+    /* Result Panel */
+    .result-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .main-result-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-bright);
+      border-radius: 14px;
+      padding: 2rem;
+      backdrop-filter: var(--glass-blur-lg);
+      box-shadow: 0 20px 45px rgba(0,0,0,0.7), 0 0 25px rgba(255, 183, 3, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gauge-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      margin: 1rem 0;
+    }
+
+    /* XAI Section */
+    .xai-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      padding: 1.5rem;
+      backdrop-filter: var(--glass-blur);
+    }
+
+    .xai-factor-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .xai-factor-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    .xai-bar-track {
+      height: 7px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .xai-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #ffb703, #fb8500);
+      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Loading Inference Overlay */
+    .inference-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(4, 9, 23, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 50;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      border-radius: 14px;
+    }
+
+    .scanner-beam {
+      width: 80%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+      box-shadow: 0 0 15px var(--accent-gold);
+      animation: scan-pulse 1.4s ease-in-out infinite alternate;
+    }
+
+    @keyframes scan-pulse {
+      0% { transform: translateY(-40px) scaleX(0.7); opacity: 0.4; }
+      100% { transform: translateY(40px) scaleX(1.1); opacity: 1; }
+    }
+
+    @media (max-width: 1024px) {
+      .prediction-grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       PAGE NAVBAR
+       ========================================================================= -->
+  <nav class="landing-nav">
+    <a href="index.html" class="logo-wrap">
+      <div class="logo-badge">
+        <i data-lucide="layers" style="width: 22px; height: 22px;"></i>
+      </div>
+      <div class="logo-text">MnVision <span>AI</span></div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#home" class="nav-link">Home</a></li>
+      <li><a href="dashboard.html" class="nav-link">GIS Dashboard</a></li>
+      <li><a href="prediction.html" class="nav-link active">AI Prediction</a></li>
+      <li><a href="forecast.html" class="nav-link">Production Forecast</a></li>
+      <li><a href="risk-analysis.html" class="nav-link">Risk Analysis</a></li>
+      <li><a href="index.html#about-section" class="nav-link">About</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="dashboard.html" class="btn-landing primary">
+        <i data-lucide="compass" style="width: 15px; height: 15px;"></i> Launch GIS Map
+      </a>
+    </div>
+  </nav>
+
+  <!-- =========================================================================
+       MAIN PREDICTION VIEW
+       ========================================================================= -->
+  <div class="prediction-container">
+    
+    <div style="margin-bottom: 2rem;">
+      <div class="hero-tag">
+        <i data-lucide="sparkles" style="width: 13px; height: 13px;"></i>
+        Deep Learning Hyperspectral Inference
+      </div>
+      <h1 style="font-size: 2.35rem; font-weight: 700; color: #fff; margin-top: 0.5rem;">
+        AI Mineral Prospectivity Prediction
+      </h1>
+      <p style="color: var(--text-secondary); font-size: 1rem; max-width: 760px;">
+        Upload multispectral satellite bands, spatial coordinates, and geological parameters to calculate machine-learned manganese potential probability scores.
+      </p>
+    </div>
+
+    <!-- Presets Quick Loader -->
+    <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1.5rem; overflow-x:auto;">
+      <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Quick Presets:</span>
+      <button class="btn-mini preset-location-btn" data-lat="21.8450" data-lon="80.2200" data-formation="Sausar Group (Gondite & Braunite)" data-elevation="420" data-soil="Ferruginous Laterite">
+        📍 Balaghat Extension
+      </button>
+      <button class="btn-mini preset-location-btn" data-lat="21.6320" data-lon="85.5820" data-formation="Iron Ore Supergroup (Bonai)" data-elevation="560" data-soil="Lateritic Gravel Bed">
+        📍 Bonai-Keonjhar Ridge
+      </button>
+      <button class="btn-mini preset-location-btn" data-lat="15.0830" data-lon="76.5490" data-formation="Dharwar Craton (Sandur Group)" data-elevation="680" data-soil="Clay-Loam Siliceous">
+        📍 Sandur-Bellary Basin
+      </button>
+    </div>
+
+    <div class="prediction-grid-layout">
+      
+      <!-- =====================================================================
+           LEFT: INPUT PANEL
+           ===================================================================== -->
+      <div class="input-panel">
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="sliders" style="color: var(--accent-gold); width: 18px; height: 18px;"></i>
+          Geological & Spectral Parameters
+        </h3>
+
+        <form id="prediction-form" style="display: flex; flex-direction: column; gap: 1.1rem;">
+          
+          <!-- Satellite Image Upload Dropzone -->
+          <div class="form-group">
+            <label class="form-label">Satellite Imagery (GeoTIFF / HDF5 / Multispectral)</label>
+            <div class="file-dropzone" id="satellite-dropzone">
+              <i data-lucide="upload-cloud" style="width: 28px; height: 28px; color: var(--accent-gold); margin-bottom: 0.4rem;"></i>
+              <div id="dropzone-filename" style="font-size: 0.85rem; color: #fff; font-weight: 600;">
+                Click or Drop Sentinel-2 / Landsat Band Raster
+              </div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">
+                Supported: SWIR-1 (B11), SWIR-2 (B12), VNIR (B8A), SAR Backscatter
+              </div>
+              <input type="file" id="satellite-file-input" style="display: none;" accept=".tif,.tiff,.hdf,.nc,.png,.jpg" />
+            </div>
+          </div>
+
+          <!-- Latitude & Longitude -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;">
+            <div class="form-group">
+              <label class="form-label">Latitude (°N)</label>
+              <input type="number" step="0.0001" id="input-lat" class="form-input" value="21.8450" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Longitude (°E)</label>
+              <input type="number" step="0.0001" id="input-lon" class="form-input" value="80.2200" required />
+            </div>
+          </div>
+
+          <!-- Geological Formation -->
+          <div class="form-group">
+            <label class="form-label">Geological Formation</label>
+            <select id="input-formation" class="form-select">
+              <option value="Sausar Group (Gondite & Braunite)">Sausar Group (Gondite & Metasediments)</option>
+              <option value="Iron Ore Supergroup (Bonai)">Iron Ore Supergroup (Bonai-Keonjhar)</option>
+              <option value="Dharwar Craton (Sandur Group)">Dharwar Craton (Sandur Schist Belt)</option>
+              <option value="Eastern Ghats Mobile Belt">Eastern Ghats Khondalite Complex</option>
+              <option value="Aravalli Supergroup">Aravalli Supergroup (Banswara)</option>
+            </select>
+          </div>
+
+          <!-- Elevation & Soil Characteristics -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;">
+            <div class="form-group">
+              <label class="form-label">Elevation (m ASL)</label>
+              <input type="number" id="input-elevation" class="form-input" value="420" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Soil Characteristics</label>
+              <select id="input-soil" class="form-select">
+                <option value="Ferruginous Laterite">Ferruginous Laterite Gravel</option>
+                <option value="Clay-Loam Siliceous">Clay-Loam Siliceous Overburden</option>
+                <option value="Black Cotton Soil">Black Cotton Soil (Deccan Trap)</option>
+                <option value="Lateritic Hardcap">Lateritic Bauxitic Hardcap</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Spectral Indices -->
+          <div class="form-group">
+            <label class="form-label">Spectral Indices Configuration</label>
+            <select class="form-select">
+              <option>SWIR (B12 / B8A) Hydroxyl Pyrolusite Index</option>
+              <option>VNIR Ferrous Iron (B4 / B2) + Mn Index</option>
+              <option>SAR X-Band HH/HV Depolarization Ratio</option>
+              <option>Multi-Temporal ASTER Band 7/6 Alteration</option>
+            </select>
+          </div>
+
+          <!-- Action Button -->
+          <button type="submit" class="btn-landing primary" id="btn-run-prediction" style="justify-content: center; padding: 0.85rem; font-size: 0.95rem; margin-top: 0.5rem;">
+            <i data-lucide="play-circle" style="width: 18px; height: 18px;"></i>
+            Run AI Prediction
+          </button>
+        </form>
+      </div>
+
+      <!-- =====================================================================
+           RIGHT: PREDICTION RESULTS & EXPLAINABLE AI
+           ===================================================================== -->
+      <div class="result-panel" id="prediction-results-card" style="position: relative;">
+        
+        <!-- Live AI Inference Scanning Overlay -->
+        <div class="inference-overlay" id="inference-loading-overlay">
+          <div style="width: 48px; height: 48px; border-radius: 50%; border: 3px solid var(--border-subtle); border-top-color: var(--accent-gold); animation: spin 1s linear infinite;"></div>
+          <div class="scanner-beam"></div>
+          <div style="font-size: 0.95rem; font-weight: 700; color: #fff;">
+            Executing Neural Mineral Inference...
+          </div>
+          <div style="font-size: 0.76rem; color: var(--accent-gold); font-family: var(--font-mono);">
+            Extracting SWIR Pyrolusite & Structural Features
+          </div>
+        </div>
+
+        <!-- Main Score Card -->
+        <div class="main-result-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <div>
+              <span style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">
+                Target Prospectivity Verdict
+              </span>
+              <h3 style="font-size: 1.3rem; font-weight: 700; color: #fff;">
+                Manganese Potential
+              </h3>
+            </div>
+            <span class="badge-tag badge-gold" id="result-potential-badge" style="font-size: 0.85rem; padding: 0.35rem 0.85rem;">
+              HIGH
+            </span>
+          </div>
+
+          <!-- Probability Gauge Canvas -->
+          <div class="gauge-wrapper">
+            <canvas id="gauge-canvas" width="220" height="150"></canvas>
+          </div>
+
+          <!-- Metric Highlights -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-top: 1rem; border-top: 1px solid var(--border-glass); padding-top: 1rem;">
+            <div class="inspector-metric-box">
+              <div class="label">Probability</div>
+              <div class="val" id="result-prob-val" style="color: var(--accent-gold);">92.4%</div>
+            </div>
+            <div class="inspector-metric-box">
+              <div class="label">Model Confidence</div>
+              <div class="val" id="result-conf-val" style="color: var(--accent-cyan);">87.8%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Explainable-AI (XAI) Attribution Breakdown -->
+        <div class="xai-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h4 style="font-size: 0.98rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.4rem;">
+              <i data-lucide="help-circle" style="color: var(--accent-gold); width: 16px; height: 16px;"></i>
+              Why did the AI select this area?
+            </h4>
+            <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">
+              SHAP Attribution
+            </span>
+          </div>
+
+          <!-- XAI Radar Chart -->
+          <div style="display: flex; justify-content: center; margin-bottom: 1.25rem;">
+            <canvas id="xai-radar-canvas" width="220" height="150"></canvas>
+          </div>
+
+          <!-- Feature Breakdown Bars -->
+          <div class="xai-factor-row">
+            <div class="xai-factor-head">
+              <span>Geological similarity</span>
+              <strong id="xai-val-geo" style="color: #fff; font-family: var(--font-mono);">89%</strong>
+            </div>
+            <div class="xai-bar-track">
+              <div class="xai-bar-fill" id="xai-bar-geo" style="width: 89%;"></div>
+            </div>
+          </div>
+
+          <div class="xai-factor-row">
+            <div class="xai-factor-head">
+              <span>Spectral similarity</span>
+              <strong id="xai-val-spec" style="color: var(--accent-gold); font-family: var(--font-mono);">93%</strong>
+            </div>
+            <div class="xai-bar-track">
+              <div class="xai-bar-fill" id="xai-bar-spec" style="width: 93%;"></div>
+            </div>
+          </div>
+
+          <div class="xai-factor-row">
+            <div class="xai-factor-head">
+              <span>Terrain similarity</span>
+              <strong id="xai-val-terrain" style="color: #fff; font-family: var(--font-mono);">81%</strong>
+            </div>
+            <div class="xai-bar-track">
+              <div class="xai-bar-fill" id="xai-bar-terrain" style="width: 81%;"></div>
+            </div>
+          </div>
+
+          <div class="xai-factor-row">
+            <div class="xai-factor-head">
+              <span>Historical occurrence</span>
+              <strong id="xai-val-hist" style="color: #fff; font-family: var(--font-mono);">88%</strong>
+            </div>
+            <div class="xai-bar-track">
+              <div class="xai-bar-fill" id="xai-bar-hist" style="width: 88%;"></div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Prediction Module Script -->
+  <script type="module" src="js/prediction.js"></script>
+
+</body>
+</html>

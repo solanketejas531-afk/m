@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manganese Geological & Supply Analytics — MnVision AI</title>
+  <meta name="description" content="State-by-state manganese potential, estimated resources, probability ratings and exploration priority analytics." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Custom Space-Tech & Analytics CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    .analytics-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: calc(100vh - 70px);
+    }
+
+    .analytics-grid-2col {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .analytics-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.75rem;
+      backdrop-filter: var(--glass-blur-lg);
+    }
+
+    .table-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.75rem;
+      backdrop-filter: var(--glass-blur-lg);
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 1024px) {
+      .analytics-grid-2col {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       PAGE NAVBAR
+       ========================================================================= -->
+  <nav class="landing-nav">
+    <a href="index.html" class="logo-wrap">
+      <div class="logo-badge">
+        <i data-lucide="layers" style="width: 22px; height: 22px;"></i>
+      </div>
+      <div class="logo-text">MnVision <span>AI</span></div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#home" class="nav-link">Home</a></li>
+      <li><a href="dashboard.html" class="nav-link">GIS Dashboard</a></li>
+      <li><a href="prediction.html" class="nav-link">AI Prediction</a></li>
+      <li><a href="forecast.html" class="nav-link">Production Forecast</a></li>
+      <li><a href="risk-analysis.html" class="nav-link">Risk Analysis</a></li>
+      <li><a href="analytics.html" class="nav-link active">Analytics</a></li>
+      <li><a href="reports.html" class="nav-link">Reports</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="dashboard.html" class="btn-landing primary">
+        <i data-lucide="compass" style="width: 15px; height: 15px;"></i> Launch GIS Map
+      </a>
+    </div>
+  </nav>
+
+  <!-- =========================================================================
+       MAIN ANALYTICS VIEW
+       ========================================================================= -->
+  <div class="analytics-container">
+    
+    <div style="margin-bottom: 2rem;">
+      <div class="hero-tag">
+        <i data-lucide="bar-chart-2" style="width: 13px; height: 13px;"></i>
+        National Manganese Reserve & Prospectivity Intelligence
+      </div>
+      <h1 style="font-size: 2.35rem; font-weight: 700; color: #fff; margin-top: 0.5rem;">
+        Manganese Geological & Supply Analytics
+      </h1>
+      <p style="color: var(--text-secondary); font-size: 1rem; max-width: 760px;">
+        State-wise breakdown of AI prospective zones, estimated resources, probability ratings, and prioritized exploration targets.
+      </p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="top-stats-row" style="margin-bottom: 2rem;">
+      
+      <div class="stat-card-compact">
+        <div>
+          <div class="label">Identified Potential Zones</div>
+          <div class="val" style="color:var(--accent-gold);">78 Zones</div>
+        </div>
+        <i data-lucide="target" style="color:var(--accent-gold); width:24px; height:24px;"></i>
+      </div>
+
+      <div class="stat-card-compact">
+        <div>
+          <div class="label">Total Estimated Ore</div>
+          <div class="val" style="color:#fff;">18.6 MT</div>
+        </div>
+        <i data-lucide="database" style="color:var(--accent-cyan); width:24px; height:24px;"></i>
+      </div>
+
+      <div class="stat-card-compact">
+        <div>
+          <div class="label">Leading State Resource</div>
+          <div class="val" style="color:#10b981;">Odisha (6.8 MT)</div>
+        </div>
+        <i data-lucide="map-pin" style="color:#10b981; width:24px; height:24px;"></i>
+      </div>
+
+      <div class="stat-card-compact">
+        <div>
+          <div class="label">Avg Model Confidence</div>
+          <div class="val" style="color:var(--accent-gold);">88.75%</div>
+        </div>
+        <i data-lucide="brain-circuit" style="color:var(--accent-gold); width:24px; height:24px;"></i>
+      </div>
+
+    </div>
+
+    <!-- Charts Row -->
+    <div class="analytics-grid-2col">
+      
+      <!-- Chart 1: State Resource Comparison -->
+      <div class="analytics-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff;">
+              Estimated Manganese Resources by State
+            </h3>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">
+              Million Tonnes (MT) in High-Potential Geological Basins
+            </div>
+          </div>
+          <span class="badge-tag badge-gold">MILLION TONNES (MT)</span>
+        </div>
+
+        <div style="position: relative; width: 100%; height: 260px;">
+          <canvas id="state-comparison-canvas" width="620" height="260" style="width: 100%; height: 100%;"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 2: Exploration Priority Distribution -->
+      <div class="analytics-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff;">
+              Exploration Priority Breakdown
+            </h3>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">
+              78 Target Zones Ranked by AI Prospectivity
+            </div>
+          </div>
+        </div>
+
+        <div style="position: relative; width: 100%; height: 200px; display: flex; justify-content: center; align-items: center;">
+          <canvas id="priority-distribution-canvas" width="220" height="200"></canvas>
+        </div>
+
+        <div class="legend-row" style="justify-content: center; margin-top: 0.5rem;">
+          <div class="legend-item">
+            <div class="legend-bullet" style="background: #f43f5e; width: 8px; height: 8px; border-radius: 50%;"></div>
+            <span>Very High (32%)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-bullet" style="background: #ffb703; width: 8px; height: 8px; border-radius: 50%;"></div>
+            <span>High (50%)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-bullet" style="background: #38bdf8; width: 8px; height: 8px; border-radius: 50%;"></div>
+            <span>Medium (18%)</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =======================================================================
+         REQUESTED STATE-BY-STATE ANALYTICS TABLE
+         ======================================================================= -->
+    <div class="table-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <div>
+          <h3 style="font-size: 1.2rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+            <i data-lucide="table" style="color: var(--accent-gold); width: 18px; height: 18px;"></i>
+            State Prospectivity & Resource Table
+          </h3>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">
+            Validated AI potential zones, probability ratings, and estimated resources across key mining states.
+          </div>
+        </div>
+        <button class="hud-btn" onclick="alert('📥 Analytics Table Exported to CSV!')">
+          <i data-lucide="download" style="width: 14px; height: 14px;"></i> Export CSV
+        </button>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="forecast-table">
+          <thead>
+            <tr>
+              <th>State / Primary Basin</th>
+              <th>Potential Zones</th>
+              <th>Probability</th>
+              <th>Estimated Resource</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
+          <tbody id="state-analytics-table-body">
+            <!-- Populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Analytics Script Module -->
+  <script type="module" src="js/analytics.js"></script>
+
+</body>
+</html>

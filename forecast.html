@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manganese Production & Demand Forecast — MnVision AI</title>
+  <meta name="description" content="Manganese production, demand, imports, exports and supply gap forecasts for 2024–2030." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Custom Space-Tech & Forecast CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    .forecast-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: calc(100vh - 70px);
+    }
+
+    /* Warning Banner */
+    .shortfall-warning-banner {
+      background: linear-gradient(90deg, rgba(244, 63, 94, 0.18) 0%, rgba(251, 133, 0, 0.12) 100%);
+      border: 1px solid rgba(244, 63, 94, 0.45);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 25px rgba(244, 63, 94, 0.15);
+      backdrop-filter: var(--glass-blur);
+    }
+
+    .warning-icon-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(244, 63, 94, 0.2);
+      border: 1px solid rgba(244, 63, 94, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-crimson);
+      flex-shrink: 0;
+    }
+
+    .forecast-grid-2col {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .chart-panel-large {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.5rem;
+      backdrop-filter: var(--glass-blur-lg);
+      position: relative;
+    }
+
+    .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 0.75rem;
+      font-size: 0.78rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: var(--text-secondary);
+    }
+
+    .legend-bullet {
+      width: 12px;
+      height: 4px;
+      border-radius: 2px;
+    }
+
+    /* Tooltip */
+    #chart-tooltip {
+      position: fixed;
+      background: rgba(6, 14, 34, 0.95);
+      border: 1px solid var(--accent-gold);
+      border-radius: 8px;
+      padding: 0.6rem 0.85rem;
+      pointer-events: none;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+      font-family: var(--font-sans);
+    }
+
+    @media (max-width: 1024px) {
+      .forecast-grid-2col {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       PAGE NAVBAR
+       ========================================================================= -->
+  <nav class="landing-nav">
+    <a href="index.html" class="logo-wrap">
+      <div class="logo-badge">
+        <i data-lucide="layers" style="width: 22px; height: 22px;"></i>
+      </div>
+      <div class="logo-text">MnVision <span>AI</span></div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#home" class="nav-link">Home</a></li>
+      <li><a href="dashboard.html" class="nav-link">GIS Dashboard</a></li>
+      <li><a href="prediction.html" class="nav-link">AI Prediction</a></li>
+      <li><a href="forecast.html" class="nav-link active">Production Forecast</a></li>
+      <li><a href="risk-analysis.html" class="nav-link">Risk Analysis</a></li>
+      <li><a href="index.html#about-section" class="nav-link">About</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="dashboard.html" class="btn-landing primary">
+        <i data-lucide="compass" style="width: 15px; height: 15px;"></i> Launch GIS Map
+      </a>
+    </div>
+  </nav>
+
+  <!-- =========================================================================
+       MAIN FORECAST CONTAINER
+       ========================================================================= -->
+  <div class="forecast-container">
+
+    <!-- Page Title & Header -->
+    <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <div class="hero-tag">
+          <i data-lucide="trending-up" style="width: 13px; height: 13px;"></i>
+          2024–2030 Supply Gap Model
+        </div>
+        <h1 style="font-size: 2.35rem; font-weight: 700; color: #fff; margin-top: 0.5rem;">
+          Manganese Production & Demand Forecast
+        </h1>
+        <p style="color: var(--text-secondary); font-size: 1rem; max-width: 760px;">
+          Dynamic multi-year modeling comparing domestic mine extraction, EV cathode requirement surge, trade flows, and looming deficit thresholds.
+        </p>
+      </div>
+
+      <!-- Scenario Selector Buttons -->
+      <div style="display: flex; gap: 0.4rem; background: rgba(5, 12, 30, 0.85); padding: 4px; border-radius: 8px; border: 1px solid var(--border-glass);">
+        <button class="layer-btn scenario-btn" data-scenario="conservative">Conservative</button>
+        <button class="layer-btn scenario-btn active" data-scenario="baseline">Baseline (230% EV)</button>
+        <button class="layer-btn scenario-btn" data-scenario="aggressive">Aggressive LMFP</button>
+      </div>
+    </div>
+
+    <!-- =======================================================================
+         CRITICAL SHORTFALL WARNING BANNER
+         ======================================================================= -->
+    <div class="shortfall-warning-banner">
+      <div class="warning-icon-badge">
+        <i data-lucide="alert-triangle" style="width: 24px; height: 24px;"></i>
+      </div>
+      <div>
+        <div style="font-size: 1.1rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+          ⚠️ High Production Shortfall Risk Detected
+          <span class="badge-tag badge-critical">SUPPLY DEFICIT 2027+</span>
+        </div>
+        <div style="font-size: 0.88rem; color: #fecdd3; margin-top: 0.35rem; line-height: 1.5;">
+          Domestic manganese production will reach peak ceiling at <strong>10.8 MT</strong> while steel & electric vehicle battery demand surges to <strong>15.0 MT</strong> by 2030. A cumulative deficit gap of <strong>4.8 MT/year</strong> will emerge unless new reserves in Balaghat and Bonai are fast-tracked.
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Metric Cards -->
+    <div class="top-stats-row" style="margin-bottom: 1.5rem;">
+      <div class="stat-card-compact">
+        <div>
+          <div class="label">2030 Demand</div>
+          <div class="val" style="color:var(--accent-crimson);">15.0 MT</div>
+        </div>
+        <i data-lucide="trending-up" style="color:var(--accent-crimson); width:24px; height:24px;"></i>
+      </div>
+
+      <div class="stat-card-compact">
+        <div>
+          <div class="label">2030 Domestic Output</div>
+          <div class="val" style="color:var(--accent-gold);">10.2 MT</div>
+        </div>
+        <i data-lucide="pickaxe" style="color:var(--accent-gold); width:24px; height:24px;"></i>
+      </div>
+
+      <div class="stat-card-compact">
+        <div>
+          <div class="label">Peak Supply Gap</div>
+          <div class="val" style="color:#f43f5e;">-4.8 MT</div>
+        </div>
+        <i data-lucide="alert-circle" style="color:#f43f5e; width:24px; height:24px;"></i>
+      </div>
+
+      <div class="stat-card-compact">
+        <div>
+          <div class="label">Required Imports Surge</div>
+          <div class="val" style="color:var(--accent-cyan);">+83%</div>
+        </div>
+        <i data-lucide="ship" style="color:var(--accent-cyan); width:24px; height:24px;"></i>
+      </div>
+    </div>
+
+    <!-- =======================================================================
+         CHARTS GRID: MAIN TIME-SERIES & TRADE BALANCE
+         ======================================================================= -->
+    <div class="forecast-grid-2col">
+      
+      <!-- Main Line Chart: Production vs Demand vs Gap -->
+      <div class="chart-panel-large">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff;">
+              Manganese Supply vs. Demand Curve (2024–2030)
+            </h3>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">
+              Hover over years to inspect precise supply gap calculations (Supply Gap = Demand − Production)
+            </div>
+          </div>
+          <span class="badge-tag badge-gold">MILLION TONNES (MT)</span>
+        </div>
+
+        <div style="position: relative; width: 100%; height: 320px; margin-top: 1rem;">
+          <canvas id="forecast-main-canvas" width="760" height="320" style="width: 100%; height: 100%; cursor: crosshair;"></canvas>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend-row">
+          <div class="legend-item">
+            <div class="legend-bullet" style="background: #ffb703;"></div>
+            <span>Domestic Production</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-bullet" style="background: #f43f5e; border-top: 2px dashed #f43f5e;"></div>
+            <span>Manganese Demand</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-bullet" style="background: rgba(244, 63, 94, 0.35);"></div>
+            <span>Supply Gap (Deficit Area)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary Chart: Import vs Export Balance -->
+      <div class="chart-panel-large">
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff;">
+          Import Reliance vs. Exports
+        </h3>
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">
+          Raw Ore & EMD Trade Flow Projections
+        </div>
+
+        <div style="position: relative; width: 100%; height: 260px;">
+          <canvas id="trade-balance-canvas" width="340" height="260" style="width: 100%; height: 100%;"></canvas>
+        </div>
+
+        <div class="legend-row" style="justify-content: center;">
+          <div class="legend-item">
+            <div class="legend-bullet" style="background: #38bdf8; width: 10px; height: 10px; border-radius: 2px;"></div>
+            <span>Imports (Ore & Concentrate)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-bullet" style="background: #10b981; width: 10px; height: 10px; border-radius: 2px;"></div>
+            <span>Exports</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =======================================================================
+         DATA TABLE: YEAR-BY-YEAR DETAILED BREAKDOWN
+         ======================================================================= -->
+    <div class="chart-panel-large" style="margin-bottom: 2rem;">
+      <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 0.85rem;">
+        Year-by-Year Production, Demand & Deficit Ledger
+      </h3>
+
+      <div style="overflow-x: auto;">
+        <table class="forecast-table">
+          <thead>
+            <tr>
+              <th>Timeline</th>
+              <th>Production (MT)</th>
+              <th>Demand (MT)</th>
+              <th>Imports (MT)</th>
+              <th>Exports (MT)</th>
+              <th>Supply Gap (Demand − Prod)</th>
+              <th>Status Verdict</th>
+            </tr>
+          </thead>
+          <tbody id="forecast-table-body">
+            <!-- Populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Interactive Hover Tooltip Element -->
+  <div id="chart-tooltip"></div>
+
+  <!-- Forecast Script Module -->
+  <script type="module" src="js/forecast.js"></script>
+
+</body>
+</html>
